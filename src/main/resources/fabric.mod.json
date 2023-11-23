@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "unremovableeffects",
+  "version": "${version}",
+
+  "name": "Unremovable Effects",
+  "description": "Makes selected status effects unremovable with Milk Bucket",
+  "authors": [
+    "Wookash Fryc"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/unremovableeffects",
+    "sources": "https://github.com/Xires87/UnremovableEffects",
+    "issues": "https://github.com/Xires87/UnremovableEffects/issues"
+  },
+
+  "license": "MIT",
+  "icon": "assets/unremovableeffects/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.fryc.unremovableeffects.UnremovableEffects"
+    ],
+    "modmenu": [
+      "net.fryc.unremovableeffects.config.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "unremovableeffects.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "fabric-api": "*",
+    "minecraft": "~1.20",
+    "java": ">=17",
+    "cloth-config": ">=11.0.99"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
