@@ -36,7 +36,7 @@ public class UnremovableStatusEffectsResourceReloadListener implements SimpleSyn
 
                 JsonObject jsonObject = JsonParser.parseString(new String(stream.readAllBytes())).getAsJsonObject();
                 boolean replace = JsonHelper.getBoolean(jsonObject, "replace", false);
-                boolean shouldGo = true;
+                boolean shouldGo = !isReplacePresent || replace;
 
                 if(replace){
                     int replacePriority = JsonHelper.getInt(jsonObject, "replace_priority", 0);
