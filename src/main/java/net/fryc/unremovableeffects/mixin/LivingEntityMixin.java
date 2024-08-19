@@ -37,7 +37,7 @@ abstract class LivingEntityMixin extends Entity implements Attackable, MilkUser 
             StatusEffectInstance effect;
             for(bl = false; iterator.hasNext(); bl = true) {
                 effect = iterator.next();
-                if(!((Unremovable) effect.getEffectType()).isUnremovable()){
+                if(!((Unremovable) effect.getEffectType().value()).isUnremovable()){
                     this.onStatusEffectRemoved(effect);
                     iterator.remove();
                 }

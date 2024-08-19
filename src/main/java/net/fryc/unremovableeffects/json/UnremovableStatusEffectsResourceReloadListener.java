@@ -23,7 +23,7 @@ public class UnremovableStatusEffectsResourceReloadListener implements SimpleSyn
 
     @Override
     public Identifier getFabricId() {
-        return new Identifier(UnremovableEffects.MOD_ID, UNREMOVABLE_STATUS_EFFECTS_PATH);
+        return Identifier.of(UnremovableEffects.MOD_ID, UNREMOVABLE_STATUS_EFFECTS_PATH);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class UnremovableStatusEffectsResourceReloadListener implements SimpleSyn
 
                 JsonObject jsonObject = JsonParser.parseString(new String(stream.readAllBytes())).getAsJsonObject();
                 boolean replace = JsonHelper.getBoolean(jsonObject, "replace", false);
-                boolean shouldGo = true;
+                boolean shouldGo = !isReplacePresent || replace;
 
                 if(replace){
                     int replacePriority = JsonHelper.getInt(jsonObject, "replace_priority", 0);
@@ -64,7 +64,7 @@ public class UnremovableStatusEffectsResourceReloadListener implements SimpleSyn
                 if(shouldGo){
                     JsonArray array = JsonHelper.getArray(jsonObject, "status_effects");
                     for (JsonElement jsonElement : array) {
-                        StatusEffect effect = StatusEffectJsonHelper.asStatusEffect(jsonElement, "status_effects_array_element");
+                        StatusEffect effect = StatusEffectJsonHelper.asStatusEffect(jsonElement, "status_effects_array_element").value();
                         UNREMOVABLE_STATUS_EFFECTS.add(effect);
                     }
                 }
