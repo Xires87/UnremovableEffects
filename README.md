@@ -2,7 +2,9 @@
 Makes selected status effects unremovable with Milk Bucket
 
 
-[CurseForge](https://www.curseforge.com/minecraft/mc-mods/unremovableeffects)
+### [CurseForge](https://www.curseforge.com/minecraft/mc-mods/unremovableeffects)
+### [Modrinth](https://modrinth.com/mod/unremovable-effects)
+
 -------------------------------------------------------------
 
 # Datapacks:
