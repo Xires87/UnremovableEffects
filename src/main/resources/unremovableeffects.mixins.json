@@ -6,7 +6,9 @@
   "mixins": [
     "LivingEntityMixin",
     "MilkBucketMixin",
-    "StatusEffectMixin"
+    "StatusEffectMixin",
+    "compatibility/FarmersDelightMilkBottleMixin",
+    "compatibility/FarmersDelightHotCocoaMixin"
   ],
   "client": [
   ],
