@@ -1,20 +1,13 @@
 package net.fryc.unremovableeffects.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.fryc.unremovableeffects.interfaces.MilkUser;
-import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.MilkBucketItem;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.stat.Stats;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MilkBucketItem.class)
 abstract class MilkBucketMixin extends Item {
@@ -23,6 +16,7 @@ abstract class MilkBucketMixin extends Item {
         super(settings);
     }
 
+    /* replaced with WrapOperation to let other mods inject
     @Inject(method = "finishUsing(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;", at = @At("HEAD"), cancellable = true)
     private void overrideFinishUsingMethod(ItemStack stack, World world, LivingEntity user , CallbackInfoReturnable<ItemStack> ret) {
         if (user instanceof ServerPlayerEntity serverPlayerEntity) {
@@ -39,5 +33,15 @@ abstract class MilkBucketMixin extends Item {
         }
 
         ret.setReturnValue(stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack);
+    }
+
+     */
+
+    @WrapOperation(
+            method = "finishUsing(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;clearStatusEffects()Z")
+    )
+    private boolean overrideClearStatusEffectsMethod(LivingEntity instance, Operation<Boolean> original) {
+        return ((MilkUser) instance).clearStatusEffectsExceptUnremovable();
     }
 }
