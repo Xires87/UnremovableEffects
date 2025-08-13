@@ -1,7 +1,8 @@
 {
   "replace": false,
   "replace_priority": 0,
-  "item": "minecraft:barrier",
+  "item": "minecraft:honey_bottle",
   "status_effects": [
+    "minecraft:poison"
   ]
 }
