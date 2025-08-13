@@ -1,0 +1,51 @@
+package net.fryc.unremovableeffects.json;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fryc.unremovableeffects.UnremovableEffects;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.item.Item;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class ItemsRemoveEffectResourceReloadListener implements SimpleSynchronousResourceReloadListener {
+
+    private static final String ITEMS_REMOVE_STATUS_EFFECTS_PATH = "items_remove_status_effects";
+    public static final HashMap<Item, HashSet<StatusEffect>> ITEMS_REMOVE_STATUS_EFFECTS = new HashMap<>();
+
+    @Override
+    public Identifier getFabricId() {
+        return new Identifier(UnremovableEffects.MOD_ID, ITEMS_REMOVE_STATUS_EFFECTS_PATH);
+    }
+
+    @Override
+    public void reload(ResourceManager manager) {
+        ITEMS_REMOVE_STATUS_EFFECTS.clear();
+        ReplaceManager replaceManager = new ReplaceManager();
+
+        for(Identifier id : manager.findResources(ITEMS_REMOVE_STATUS_EFFECTS_PATH, path -> path.getPath().endsWith(".json")).keySet()) {
+            try(InputStream stream = manager.getResource(id).get().getInputStream()) {
+                JsonObject jsonObject = JsonParser.parseString(new String(stream.readAllBytes())).getAsJsonObject();
+                Item item = JsonHelper.getItem(jsonObject, "item");
+                ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item, new HashSet<>());
+
+                FrycJsonHelper.manageReloading(
+                        id.getPath(),
+                        jsonObject,
+                        "status_effects",
+                        ITEMS_REMOVE_STATUS_EFFECTS.get(item),
+                        FrycJsonHelper::asStatusEffect,
+                        replaceManager
+                );
+            } catch(Exception e) {
+                UnremovableEffects.LOGGER.error("Error occurred while loading resource json" + id.toString(), e);
+            }
+        }
+    }
+}
