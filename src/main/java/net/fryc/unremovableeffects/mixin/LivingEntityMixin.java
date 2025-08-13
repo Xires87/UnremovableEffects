@@ -2,6 +2,7 @@ package net.fryc.unremovableeffects.mixin;
 
 import net.fryc.unremovableeffects.interfaces.MilkUser;
 import net.fryc.unremovableeffects.interfaces.Unremovable;
+import net.fryc.unremovableeffects.json.ItemsRemoveEffectResourceReloadListener;
 import net.minecraft.entity.Attackable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -10,6 +11,9 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Iterator;
 
@@ -44,6 +48,17 @@ abstract class LivingEntityMixin extends Entity implements Attackable, MilkUser 
             }
 
             return bl;
+        }
+    }
+
+    @Inject(method = "consumeItem()V", at = @At(value = "INVOKE", target =
+            "Lnet/minecraft/entity/LivingEntity;spawnConsumptionEffects(Lnet/minecraft/item/ItemStack;I)V", shift = At.Shift.AFTER))
+    private void removeEffectsAfterUsingItem(CallbackInfo info) {
+        LivingEntity dys = ((LivingEntity)(Object)this);
+        if(!dys.getWorld().isClient()){
+            if(ItemsRemoveEffectResourceReloadListener.ITEMS_REMOVE_STATUS_EFFECTS.containsKey(dys.getActiveItem().getItem())){
+                ItemsRemoveEffectResourceReloadListener.ITEMS_REMOVE_STATUS_EFFECTS.get(dys.getActiveItem().getItem()).forEach(dys::removeStatusEffect);
+            }
         }
     }
 }
