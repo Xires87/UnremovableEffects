@@ -3,7 +3,9 @@ Adds a possibility of selecting which status effects should not be removed with 
 making an item a cure for selected status effects
 
 
-[CurseForge](https://www.curseforge.com/minecraft/mc-mods/unremovableeffects)
+### [CurseForge](https://www.curseforge.com/minecraft/mc-mods/unremovableeffects)
+### [Modrinth](https://modrinth.com/mod/unremovable-effects)
+
 -------------------------------------------------------------
 
 # Datapacks:
