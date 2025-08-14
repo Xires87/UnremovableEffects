@@ -1,5 +1,7 @@
 package net.fryc.unremovableeffects.json;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
@@ -27,22 +29,26 @@ public class ItemsRemoveEffectResourceReloadListener implements SimpleSynchronou
     @Override
     public void reload(ResourceManager manager) {
         ITEMS_REMOVE_STATUS_EFFECTS.clear();
-        ReplaceManager replaceManager = new ReplaceManager();
 
         for(Identifier id : manager.findResources(ITEMS_REMOVE_STATUS_EFFECTS_PATH, path -> path.getPath().endsWith(".json")).keySet()) {
             try(InputStream stream = manager.getResource(id).get().getInputStream()) {
                 JsonObject jsonObject = JsonParser.parseString(new String(stream.readAllBytes())).getAsJsonObject();
-                Item item = JsonHelper.getItem(jsonObject, "item");
-                ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item, new HashSet<>());
+                JsonArray itemsArray = JsonHelper.getArray(jsonObject, "items");
+                JsonArray effectArray = JsonHelper.getArray(jsonObject, "status_effects");
 
-                FrycJsonHelper.manageReloading(
-                        id.getPath(),
-                        jsonObject,
-                        "status_effects",
-                        ITEMS_REMOVE_STATUS_EFFECTS.get(item),
-                        FrycJsonHelper::asStatusEffect,
-                        replaceManager
-                );
+                HashSet<StatusEffect> effects = new HashSet<>();
+
+                for (JsonElement jsonElement : effectArray) {
+                    StatusEffect effect = FrycJsonHelper.asStatusEffect(jsonElement, "array_element");
+                    effects.add(effect);
+                }
+
+                for (JsonElement jsonElement : itemsArray) {
+                    Item item = JsonHelper.asItem(jsonElement, "array_element");
+                    ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item, new HashSet<>());
+                    ITEMS_REMOVE_STATUS_EFFECTS.get(item).addAll(effects);
+                }
+
             } catch(Exception e) {
                 UnremovableEffects.LOGGER.error("Error occurred while loading resource json" + id.toString(), e);
             }

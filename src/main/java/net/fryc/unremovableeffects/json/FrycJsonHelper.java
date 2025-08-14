@@ -24,19 +24,19 @@ public class FrycJsonHelper {
         }
     }
 
-    public static <T> void manageReloading(ResourceManager manager, String resourcesPath, String arrayElement, Collection<T> collection, JsonSupplier<T> jsonSupplier){
+    public static <T> void manageReloadingWithReplacing(ResourceManager manager, String resourcesPath, String arrayElement, Collection<T> collection, JsonSupplier<T> jsonSupplier){
         ReplaceManager replaceManager = new ReplaceManager();
         for(Identifier id : manager.findResources(resourcesPath, path -> path.getPath().endsWith(".json")).keySet()) {
             try(InputStream stream = manager.getResource(id).get().getInputStream()) {
                 JsonObject jsonObject = JsonParser.parseString(new String(stream.readAllBytes())).getAsJsonObject();
-                manageReloading(id.getPath(), jsonObject, arrayElement, collection, jsonSupplier, replaceManager);
+                manageReloadingWithReplacing(id.getPath(), jsonObject, arrayElement, collection, jsonSupplier, replaceManager);
             } catch(Exception e) {
                 UnremovableEffects.LOGGER.error("Error occurred while loading resource json" + id.toString(), e);
             }
         }
     }
 
-    public static <T> void manageReloading(String filePath, JsonObject jsonObject, String arrayElement, Collection<T> collection, JsonSupplier<T> jsonSupplier, ReplaceManager replaceManager){
+    public static <T> void manageReloadingWithReplacing(String filePath, JsonObject jsonObject, String arrayElement, Collection<T> collection, JsonSupplier<T> jsonSupplier, ReplaceManager replaceManager){
         boolean replace = JsonHelper.getBoolean(jsonObject, "replace", false);
         boolean shouldGo = !replaceManager.isReplacePresent() || replace;
 

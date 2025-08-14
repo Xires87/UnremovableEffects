@@ -1,7 +1,7 @@
 {
-  "replace": false,
-  "replace_priority": 0,
-  "item": "minecraft:honey_bottle",
+  "items": [
+    "minecraft:honey_bottle"
+  ],
   "status_effects": [
     "minecraft:poison"
   ]
