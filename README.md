@@ -36,26 +36,35 @@ In `"status_effects"` add status effects which you want to make unremovable, for
 }
 ```
 
+If you set `"replace"` to true, other files will be ignored.
+
+If there are multiple files with replace set to true, the one with **the highest** priority (`"replace_priority"`) will be used.
+
+If multiple files have the same `"replace_priority"`, the one that was loaded first will be used (a warning in logs will appear in such situation)
+
 ### Making items remove selected status effects
 
-To make item remove selected status effects, in `data/unremovableeffects/items_remove_status_effects/` create json file containing:
+To make items remove selected status effects, in `data/unremovableeffects/items_remove_status_effects/` create json file containing:
 ```json
 {
-  "replace": false,
-  "replace_priority": 0,
-  "item": "",
+  "items": [
+    
+  ],
   "status_effects": [
 
   ]
 }
 ```
 
-In `"item"` add item which you want to be a cure for status effects specified in `"status_effects"`, for example:
+In `"items"` add items which you want to be a cure for status effects specified in `"status_effects"`, for example:
 ```json
 {
-  "replace": false,
-  "replace_priority": 0,
-  "item": "minecraft:cooked_porkchop",
+  "items": [
+    "minecraft:cooked_porkchop",
+    "minecraft:cooked_beef",
+    "some_mod_id:some_item",
+    "some_mod_id:another_item"
+  ],
   "status_effects": [
     "minecraft:blindness",
     "minecraft:darkness",
@@ -66,14 +75,6 @@ In `"item"` add item which you want to be a cure for status effects specified in
 ```
 
 **Note:** Selected item needs to be consumed to remove effects - not all items will work
-
-### About 'replace'
-
-If you set `"replace"` to true, other files will be ignored. 
-
-If there are multiple files with replace set to true, the one with **the highest** priority (`"replace_priority"`) will be used.
-
-If multiple files has the same `"replace_priority"`, the one that was loaded first will be used (a warning in logs will appear in such situation)
 
 ### Additional info
 
