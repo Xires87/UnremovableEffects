@@ -50,7 +50,7 @@ To make item remove selected status effects, in `data/unremovableeffects/items_r
 }
 ```
 
-In `item` add item which you want to be a cure for status effects specified in `"status_effects"`, for example:
+In `"item"` add item which you want to be a cure for status effects specified in `"status_effects"`, for example:
 ```json
 {
   "replace": false,
