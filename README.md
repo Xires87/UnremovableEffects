@@ -38,7 +38,7 @@ In `"status_effects"` add status effects which you want to make unremovable, for
 
 ### Making items remove selected status effects
 
-To make item remove selected status effects, in `data/unremovableeffects/unremovable_status_effects/` create json file containing:
+To make item remove selected status effects, in `data/unremovableeffects/items_remove_status_effects/` create json file containing:
 ```json
 {
   "replace": false,
