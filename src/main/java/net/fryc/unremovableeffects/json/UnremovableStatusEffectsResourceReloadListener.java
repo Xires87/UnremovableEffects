@@ -23,7 +23,14 @@ public class UnremovableStatusEffectsResourceReloadListener implements SimpleSyn
     @Override
     public void reload(ResourceManager manager) {
         UNREMOVABLE_STATUS_EFFECTS.clear();
-        FrycJsonHelper.manageReloading(manager, UNREMOVABLE_STATUS_EFFECTS_PATH, "status_effects", UNREMOVABLE_STATUS_EFFECTS, FrycJsonHelper::asStatusEffect);
+
+        FrycJsonHelper.manageReloadingWithReplacing(
+                manager,
+                UNREMOVABLE_STATUS_EFFECTS_PATH,
+                "status_effects",
+                UNREMOVABLE_STATUS_EFFECTS,
+                FrycJsonHelper::asStatusEffect
+        );
 
         for(StatusEffect effect : Registries.STATUS_EFFECT){
             ((Unremovable) effect).setUnremovable(UNREMOVABLE_STATUS_EFFECTS.contains(effect));
