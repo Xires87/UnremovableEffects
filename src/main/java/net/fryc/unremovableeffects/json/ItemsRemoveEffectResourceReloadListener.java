@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fryc.unremovableeffects.UnremovableEffects;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -23,7 +24,7 @@ public class ItemsRemoveEffectResourceReloadListener implements SimpleSynchronou
 
     @Override
     public Identifier getFabricId() {
-        return new Identifier(UnremovableEffects.MOD_ID, ITEMS_REMOVE_STATUS_EFFECTS_PATH);
+        return Identifier.of(UnremovableEffects.MOD_ID, ITEMS_REMOVE_STATUS_EFFECTS_PATH);
     }
 
     @Override
@@ -44,9 +45,9 @@ public class ItemsRemoveEffectResourceReloadListener implements SimpleSynchronou
                 }
 
                 for (JsonElement jsonElement : itemsArray) {
-                    Item item = JsonHelper.asItem(jsonElement, "array_element");
-                    ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item, new HashSet<>());
-                    ITEMS_REMOVE_STATUS_EFFECTS.get(item).addAll(effects);
+                    RegistryEntry<Item> item = JsonHelper.asItem(jsonElement, "array_element");
+                    ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item.value(), new HashSet<>());
+                    ITEMS_REMOVE_STATUS_EFFECTS.get(item.value()).addAll(effects);
                 }
 
             } catch(Exception e) {

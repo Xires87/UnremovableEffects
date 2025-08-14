@@ -5,6 +5,7 @@ import net.fryc.unremovableeffects.UnremovableEffects;
 import net.fryc.unremovableeffects.interfaces.Unremovable;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 

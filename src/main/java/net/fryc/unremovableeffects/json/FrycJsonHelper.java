@@ -16,7 +16,7 @@ public class FrycJsonHelper {
     public static StatusEffect asStatusEffect(JsonElement element, String name) {
         if (element.isJsonPrimitive()) {
             String string = element.getAsString();
-            return (StatusEffect) Registries.STATUS_EFFECT.getOrEmpty(new Identifier(string)).orElseThrow(() -> {
+            return (StatusEffect) Registries.STATUS_EFFECT.getOrEmpty(Identifier.of(string)).orElseThrow(() -> {
                 return new JsonSyntaxException("Expected " + name + " to be a status effect, was unknown string '" + string + "'");
             });
         } else {

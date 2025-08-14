@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.HoneyBottleItem;
 import net.minecraft.item.Item;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -17,9 +18,9 @@ abstract class HoneyBottleMixin extends Item {
 
     @WrapWithCondition(
             method = "finishUsing(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;removeStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;removeStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z")
     )
-    private boolean preventPoisonRemoval(LivingEntity instance, StatusEffect effect) {
+    private boolean preventPoisonRemoval(LivingEntity instance, RegistryEntry<StatusEffect> effect) {
         return false;
     }
 }
