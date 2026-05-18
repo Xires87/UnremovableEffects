@@ -1,10 +1,9 @@
 package net.fryc.unremovableeffects.mixin;
 
-import net.fryc.unremovableeffects.UnremovableEffects;
 import net.fryc.unremovableeffects.compatibility.MuaCompatibility;
+import net.fryc.unremovableeffects.json.ItemsRemoveEffectResourceReloadListener;
 import net.fryc.unremovableeffects.mixin_interfaces.MilkUser;
 import net.fryc.unremovableeffects.mixin_interfaces.Unremovable;
-import net.fryc.unremovableeffects.json.ItemsRemoveEffectResourceReloadListener;
 import net.minecraft.entity.Attackable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
