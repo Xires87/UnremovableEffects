@@ -1,7 +1,7 @@
 package net.fryc.unremovableeffects.mixin.compatibility;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.fryc.unremovableeffects.interfaces.Unremovable;
+import net.fryc.unremovableeffects.mixin_interfaces.Unremovable;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;

@@ -20,7 +20,7 @@ import java.util.HashSet;
 public class ItemsRemoveEffectResourceReloadListener implements SimpleSynchronousResourceReloadListener {
 
     private static final String ITEMS_REMOVE_STATUS_EFFECTS_PATH = "items_remove_status_effects";
-    public static final HashMap<Item, HashSet<StatusEffect>> ITEMS_REMOVE_STATUS_EFFECTS = new HashMap<>();
+    public static final HashMap<Item, HashMap<Identifier, HashSet<StatusEffect>>> ITEMS_REMOVE_STATUS_EFFECTS = new HashMap<>();
 
     @Override
     public Identifier getFabricId() {
@@ -45,9 +45,32 @@ public class ItemsRemoveEffectResourceReloadListener implements SimpleSynchronou
                 }
 
                 for (JsonElement jsonElement : itemsArray) {
-                    RegistryEntry<Item> item = JsonHelper.asItem(jsonElement, "array_element");
-                    ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item.value(), new HashSet<>());
-                    ITEMS_REMOVE_STATUS_EFFECTS.get(item.value()).addAll(effects);
+                    boolean actionsEmpty = true;
+
+                    if(jsonElement.isJsonObject()) {
+                        RegistryEntry<Item> item = JsonHelper.asItem(jsonElement.getAsJsonObject().get("id"), "item_id");
+                        JsonArray supportedActionsArray = JsonHelper.getArray(jsonElement.getAsJsonObject(), "supported_actions", new JsonArray());
+
+                        if(!supportedActionsArray.isEmpty()) {
+                            ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item.value(), new HashMap<>());
+
+                            for (JsonElement supportedActionElement : supportedActionsArray) {
+                                String action = JsonHelper.asString(supportedActionElement, "actions_array_element");
+                                Identifier actionId = Identifier.of(action);
+                                ITEMS_REMOVE_STATUS_EFFECTS.get(item.value()).putIfAbsent(actionId, new HashSet<>());
+                                ITEMS_REMOVE_STATUS_EFFECTS.get(item.value()).get(actionId).addAll(effects);
+                            }
+
+                            actionsEmpty = false;
+                        }
+                    }
+
+                    if(actionsEmpty) {
+                        RegistryEntry<Item> item = JsonHelper.asItem(jsonElement, "array_element");
+                        ITEMS_REMOVE_STATUS_EFFECTS.putIfAbsent(item.value(), new HashMap<>());
+                        ITEMS_REMOVE_STATUS_EFFECTS.get(item.value()).putIfAbsent(null, new HashSet<>());
+                        ITEMS_REMOVE_STATUS_EFFECTS.get(item.value()).get(null).addAll(effects);
+                    }
                 }
 
             } catch(Exception e) {

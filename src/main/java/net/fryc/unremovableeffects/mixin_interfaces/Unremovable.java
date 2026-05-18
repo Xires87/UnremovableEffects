@@ -1,4 +1,4 @@
-package net.fryc.unremovableeffects.interfaces;
+package net.fryc.unremovableeffects.mixin_interfaces;
 
 /**
  * Implemented in StatusEffect

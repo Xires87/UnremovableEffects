@@ -1,6 +1,6 @@
 package net.fryc.unremovableeffects.mixin;
 
-import net.fryc.unremovableeffects.interfaces.Unremovable;
+import net.fryc.unremovableeffects.mixin_interfaces.Unremovable;
 import net.minecraft.entity.effect.StatusEffect;
 import org.spongepowered.asm.mixin.Mixin;
 

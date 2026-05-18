@@ -1,7 +1,9 @@
 package net.fryc.unremovableeffects.mixin;
 
-import net.fryc.unremovableeffects.interfaces.MilkUser;
-import net.fryc.unremovableeffects.interfaces.Unremovable;
+import net.fryc.unremovableeffects.UnremovableEffects;
+import net.fryc.unremovableeffects.compatibility.MuaCompatibility;
+import net.fryc.unremovableeffects.mixin_interfaces.MilkUser;
+import net.fryc.unremovableeffects.mixin_interfaces.Unremovable;
 import net.fryc.unremovableeffects.json.ItemsRemoveEffectResourceReloadListener;
 import net.minecraft.entity.Attackable;
 import net.minecraft.entity.Entity;
@@ -9,6 +11,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -58,8 +61,15 @@ abstract class LivingEntityMixin extends Entity implements Attackable, MilkUser 
         LivingEntity dys = ((LivingEntity)(Object)this);
         if(!dys.getWorld().isClient()){
             if(ItemsRemoveEffectResourceReloadListener.ITEMS_REMOVE_STATUS_EFFECTS.containsKey(dys.getActiveItem().getItem())){
-                ItemsRemoveEffectResourceReloadListener.ITEMS_REMOVE_STATUS_EFFECTS.get(dys.getActiveItem().getItem()).forEach(effect -> {
-                    dys.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(effect));
+                Identifier selectedUseAction = MuaCompatibility.getCurrentlySelectedUseAction(dys);
+                UnremovableEffects.LOGGER.warn(selectedUseAction != null ? selectedUseAction.toString() : "null");
+
+                ItemsRemoveEffectResourceReloadListener.ITEMS_REMOVE_STATUS_EFFECTS.get(dys.getActiveItem().getItem()).forEach((id, effects) -> {
+                    if(selectedUseAction == null || id == null || selectedUseAction.equals(id)){
+                        effects.forEach(effect -> {
+                            dys.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(effect));
+                        });
+                    }
                 });
             }
         }

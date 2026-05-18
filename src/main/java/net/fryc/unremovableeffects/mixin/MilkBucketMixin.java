@@ -2,7 +2,7 @@ package net.fryc.unremovableeffects.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.fryc.unremovableeffects.interfaces.MilkUser;
+import net.fryc.unremovableeffects.mixin_interfaces.MilkUser;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.MilkBucketItem;

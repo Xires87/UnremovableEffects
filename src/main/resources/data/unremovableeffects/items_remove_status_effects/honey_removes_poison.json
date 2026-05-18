@@ -1,6 +1,13 @@
 {
   "items": [
-    "minecraft:honey_bottle"
+    {
+      "id": "minecraft:honey_bottle",
+      "supported_actions": [
+        "minecraft:default",
+        "minecraft:use_default",
+        "minecraft:food_eat"
+      ]
+    }
   ],
   "status_effects": [
     "minecraft:poison"
