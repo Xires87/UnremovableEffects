@@ -80,3 +80,32 @@ In `"items"` add items which you want to be a cure for status effects specified 
 
 Honey bottle's ability to remove poison has been removed and re-added via json file
 (`data/unremovableeffects/items_remove_status_effects/honey_removes_poison.json`)
+
+### Multiple use actions compatibility
+
+In `"items"`, you can specify which use actions should remove selected status effects (works only when Multiple use actions is installed).
+
+The example below makes cooked beef remove blindness and darkness only when used by vanilla system (`"minecraft:default"`) 
+or by `"minecraft:use_default"` action - if you eat cooked beef by using `"minecraft:food_eat"` action, status effects won't be removed (it doesn't really make sense, but is possible).
+
+
+```json
+{
+  "items": [
+    "minecraft:cooked_porkchop",
+    {
+      "id": "minecraft:cooked_beef",
+      "supported_actions": [
+        "minecraft:default",
+        "minecraft:use_default"
+      ]
+    }
+  ],
+  "status_effects": [
+    "minecraft:blindness",
+    "minecraft:darkness"
+  ]
+}
+```
+
+Passing empty array for `"supported_actions"`, or passing item's id directly to `"items"` array makes it work for all use actions.
