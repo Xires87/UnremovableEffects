@@ -62,7 +62,6 @@ abstract class LivingEntityMixin extends Entity implements Attackable, MilkUser 
         if(!dys.getWorld().isClient()){
             if(ItemsRemoveEffectResourceReloadListener.ITEMS_REMOVE_STATUS_EFFECTS.containsKey(dys.getActiveItem().getItem())){
                 Identifier selectedUseAction = MuaCompatibility.getCurrentlySelectedUseAction(dys);
-                UnremovableEffects.LOGGER.warn(selectedUseAction != null ? selectedUseAction.toString() : "null");
 
                 ItemsRemoveEffectResourceReloadListener.ITEMS_REMOVE_STATUS_EFFECTS.get(dys.getActiveItem().getItem()).forEach((id, effects) -> {
                     if(selectedUseAction == null || id == null || selectedUseAction.equals(id)){
